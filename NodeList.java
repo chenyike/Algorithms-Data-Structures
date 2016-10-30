@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-
-
 public class NodeList<T> {
 	
 	public T data;
@@ -89,7 +86,7 @@ public class NodeList<T> {
 	
 	
 	
-	
+	// Test for overlapping list --- Lists may have cycles    Oct 30, 2016
 	public static NodeList<Integer> cycleHead(NodeList<Integer> L) {
 		NodeList<Integer> slowIterator = L;
 		NodeList<Integer> fastIterator = L;
@@ -170,7 +167,7 @@ public class NodeList<T> {
 			int length1 = calLength(L1);
 			int length2 = calLength(L2);
 			int diff = length1 - length2;
-			if(length1 > length2) {
+			if(diff > 0) {
 				NodeList<Integer> nodeL1 = advanceDiffStep(L1, diff);
 				NodeList<Integer> overLappedNode = isOverLapped(nodeL1, L2);
 				return overLappedNode;
@@ -198,18 +195,34 @@ public class NodeList<T> {
 			// 3a if they merge before the cycle, return that node
 			// 3b if they merge right at the beginning of the cycle return any node in the loop
 			NodeList<Integer> startCycleNode = cycleHead(L1);
-			int diff = lengthBeforeCycle(L1, startCycleNode) - lengthBeforeCycle(L2, startCycleNode);
-			if(diff > 0) {
-				NodeList<Integer> i1 = advanceDiffStep(L1,diff);
-				NodeList<Integer> i2 = L2;
-				while(i1 != null && i2 != null) {
-					i1 = i1.next;
-					i2 = i2.next;
+			NodeList<Integer> startCycleNode2 = cycleHead(L2);
+			if (startCycleNode != startCycleNode2) {
+				NodeList<Integer> i3 = startCycleNode2.next;
+				while(i3 != startCycleNode2) {
+					i3 = i3.next;
+					if(i3 == startCycleNode) {
+						return i3;
+					}
 				}
-				
-				return i1 == startCycleNode ? startCycleNode: i1;
+				return null;
 			}
-		}	
+			int diff = lengthBeforeCycle(L1, startCycleNode) - lengthBeforeCycle(L2, startCycleNode);
+			NodeList<Integer> i1 = L1;
+			NodeList<Integer> i2 = L2;
+			if(diff > 0) {
+				i1 = advanceDiffStep(L1, diff);
+			}
+			else {
+				i2 = advanceDiffStep(L2,diff);
+			}
+			while(i1 != i2) {
+				i1 = i1.next;
+				i2 = i2.next;
+			}
+			return i1;
+		}
+		
+		return null;
 	}
 
 	public static void main(String[] args) {
