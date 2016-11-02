@@ -85,7 +85,7 @@ public class NodeList<T> {
 	}
 	
 	
-	
+	//------------------------------------------------------------------------------------------------------------------
 	// Test for overlapping list --- Lists may have cycles    Oct 30, 2016
 	public static NodeList<Integer> cycleHead(NodeList<Integer> L) {
 		NodeList<Integer> slowIterator = L;
@@ -115,9 +115,7 @@ public class NodeList<T> {
 		return null;
 	}
 	
-	
-	
-	
+
 	
 	public static int calLength(NodeList<Integer> L) {
 		NodeList<Integer> i = L;
@@ -223,6 +221,35 @@ public class NodeList<T> {
 		}
 		
 		return null;
+	}
+	
+	// ------------------------------------------------------------------------------------------------------------------
+	// Delete a node from the list P123    Oct 30, 2016
+	public static void deleteNode(NodeList<Integer> nodeToDelete) {
+		nodeToDelete.data = nodeToDelete.next.data;
+		nodeToDelete.next = nodeToDelete.next.next;
+	}
+	
+	// Delete the kth last element from a list
+	public static void deleteKthLastNode(NodeList<Integer> L, int k) {
+		// let two iterators starts from the beginning of the list and one of them advanced by k step.
+		NodeList<Integer> i1 = L;
+		NodeList<Integer> i2 = L;
+		for(int i = 0; i < k+1; i ++) {
+			i1 = i1.next;
+		}
+		
+		while(i1 != null && i2 != null) {
+			i1 = i1.next;
+			i2 = i2.next;
+		}
+		
+		// i2 would stop at the node that needs to be deleted
+		if(k != 0) {
+			i2.data = i2.next.data;
+			i2.next = i2.next.next;
+		}
+		
 	}
 
 	public static void main(String[] args) {
